@@ -36,8 +36,12 @@ import youtube_dl
 
 
 def download_video (url,options,file_name):
-    #ydl_opts = {'format': '134'}
-    file_ext=file_name+'.%(ext)s'
+    #22 is 720p 18 is 360p 36 is 180p(3gp)
+    #ydl_opts = {'format': '134'}\
+    print(url)
+    print(options)
+    print(file_name)
+    file_ext=str(file_name)+'.%(ext)s'
     options['outtmpl']=file_ext
     ydl_opts=options
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
@@ -45,4 +49,4 @@ def download_video (url,options,file_name):
 
 
 
-download_video('https://www.youtube.com/watch?v=tbjzZHuGTng',{'format': '18'},'test')
+# download_video('https://www.youtube.com/watch?v=tbjzZHuGTng',{'format': '18'},'test')
