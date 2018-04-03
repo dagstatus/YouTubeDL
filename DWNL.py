@@ -32,6 +32,15 @@ import youtube_dl
 # for x in formats:
 #     print(x.get('format_id')+" "+x.get('format_note')+" "+x.get('ext'))
 
+def get_info_video (url):
+    with youtube_dl.YoutubeDL() as ydl:
+        listing=ydl.extract_info(url,download=False)
+
+
+        print('duration')
+        print(listing.get('duration'))
+        # print(listing)
+        return int(listing.get('duration'))
 
 
 
@@ -46,6 +55,9 @@ def download_video (url,options,file_name):
     ydl_opts=options
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
+
+
+
 
 
 

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#Добавил проверку УРЛ
 import sys
 import os
 import time
@@ -45,12 +46,15 @@ def save_vidos(url,option,fl_name):
         send_f_ext='3gp'
     send_f_name = str(fl_name)+"."+send_f_ext
     qualiti['format']=str(option)
+    bot.sendMessage(fl_name, 'Файл скачивается, пожалуйста подождите...')
     DWNL.download_video(url,qualiti,fl_name)
     print('sent video')
+
     bot.sendVideo(fl_name,open(send_f_name,'rb'))
     print('sent complite, delete file')
     os.remove(send_f_name)
     print('delete file complite')
+    bot.sendMessage(fl_name, 'Благодарим за использование нашего бота')
 
 def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -62,7 +66,15 @@ def handle(msg):
             if str(url_txt)[:16]=='https://www.youtu.be':
                 url_txt='https://www.youtube.com/watch?v='+url_txt[len(url_txt-11):]
             config.chat_url[chat_id]=url_txt
-            on_chat_message(msg)
+            bot.sendMessage(chat_id,'Одну минуту мы проверяем доступность видео')
+            try:
+                if DWNL.get_info_video(url_txt)<600:
+                    on_chat_message(msg)
+                else:
+                    bot.sendMessage(chat_id,'Изините вы выбрали слишком длинный файл(более 10 минут). Приносим свои извинения')
+            except:
+                print('error get duration in telega')
+                bot.sendMessage(chat_id,'Возникла ошибка, возможно ссылка неверная')
 
     except AttributeError:
         print('BAD URL')
