@@ -54,11 +54,16 @@ def save_vidos(url,option,fl_name):
     print('sent complite, delete file')
     os.remove(send_f_name)
     print('delete file complite')
+    user_num=config.numbers_user
+    config.numbers_user=user_num+1
     bot.sendMessage(fl_name, 'Благодарим за использование нашего бота')
 
 def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     print(content_type, chat_type, chat_id)
+    if msg['text']== '/numb':
+        kol_users='Количество пользователей использовавших бот - '+str(config.numbers_user)
+        bot.sendMessage(bot.sendMessage(chat_id,kol_users))
     try:
         url_txt=(re.search("(?P<url>https?://[^\s]+)", str(msg['text'])).group("url"))
         if 'https://www.yout' == str(url_txt)[:16] or 'https://youtu' == str(url_txt)[:13] :
