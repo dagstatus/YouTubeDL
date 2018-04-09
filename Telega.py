@@ -63,26 +63,27 @@ def handle(msg):
     print(content_type, chat_type, chat_id)
     if msg['text']== '/numb':
         kol_users='Количество пользователей использовавших бот - '+str(config.numbers_user)
-        bot.sendMessage(bot.sendMessage(chat_id,kol_users))
-    try:
-        url_txt=(re.search("(?P<url>https?://[^\s]+)", str(msg['text'])).group("url"))
-        if 'https://www.yout' == str(url_txt)[:16] or 'https://youtu' == str(url_txt)[:13] :
-            print('It is youtube url')
-            if str(url_txt)[:16]=='https://www.youtu.be':
-                url_txt='https://www.youtube.com/watch?v='+url_txt[len(url_txt-11):]
-            config.chat_url[chat_id]=url_txt
-            bot.sendMessage(chat_id,'Одну минуту мы проверяем доступность видео')
-            try:
-                if DWNL.get_info_video(url_txt)<600:
-                    on_chat_message(msg)
-                else:
-                    bot.sendMessage(chat_id,'Изините вы выбрали слишком длинный файл(более 10 минут). Приносим свои извинения')
-            except:
-                print('error get duration in telega')
-                bot.sendMessage(chat_id,'Возникла ошибка, возможно ссылка неверная')
+        bot.sendMessage(chat_id,kol_users)
+    else:
+        try:
+            url_txt=(re.search("(?P<url>https?://[^\s]+)", str(msg['text'])).group("url"))
+            if 'https://www.yout' == str(url_txt)[:16] or 'https://youtu' == str(url_txt)[:13] :
+                print('It is youtube url')
+                if str(url_txt)[:16]=='https://www.youtu.be':
+                    url_txt='https://www.youtube.com/watch?v='+url_txt[len(url_txt-11):]
+                config.chat_url[chat_id]=url_txt
+                bot.sendMessage(chat_id,'Одну минуту мы проверяем доступность видео')
+                try:
+                    if DWNL.get_info_video(url_txt)<600:
+                        on_chat_message(msg)
+                    else:
+                        bot.sendMessage(chat_id,'Изините вы выбрали слишком длинный файл(более 10 минут). Приносим свои извинения')
+                except:
+                    print('error get duration in telega')
+                    bot.sendMessage(chat_id,'Возникла ошибка, возможно ссылка неверная')
 
-    except AttributeError:
-        print('BAD URL')
+        except AttributeError:
+            print('BAD URL')
 
 
 
